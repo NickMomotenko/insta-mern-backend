@@ -32,8 +32,10 @@ export const register = async (req, res) => {
 
     const { passwordHash, ...rest } = doc._doc;
 
-    res.json({ ...rest, token });
+    res.json({ message: "Вы успешно зарегистрировались" });
   } catch (err) {
+    console.log(err);
+
     res.status(500).json({
       message: "Не удалось выполнить регистрацию",
     });
@@ -42,9 +44,13 @@ export const register = async (req, res) => {
 
 export const login = async (req, res) => {
   try {
-    const user = await User.findOne({
-      email: req.body.email,
-    });
+    const isEmail = req.body.email?.includes("@");
+
+    const dataObj = isEmail
+      ? { email: req.body.email }
+      : { nickname: req.body.email };
+
+    const user = await User.findOne(dataObj);
 
     if (!user) {
       return res.status(404).json({
