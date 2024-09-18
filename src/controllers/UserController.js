@@ -13,16 +13,16 @@ export const register = async (req, res) => {
     const salt = await bcrypt.genSalt(10);
     const hash = await bcrypt.hash(password, salt);
 
-    const doc = await User.create({
+    let userObj = {
       email: req.body.email,
       nickname: req.body.nickname,
       passwordHash: hash,
       id: uuid(),
-    });
+    };
 
     const token = jwt.sign(
       {
-        _id: doc.id,
+        _id: userObj.id,
       },
       "secret123",
       {
@@ -30,7 +30,9 @@ export const register = async (req, res) => {
       }
     );
 
-    const { passwordHash, ...rest } = doc._doc;
+    userObj = { ...userObj, token };
+
+    let doc = await User.create({ user: userObj });
 
     res.json({ message: "Вы успешно зарегистрировались" });
   } catch (err) {
@@ -47,12 +49,12 @@ export const login = async (req, res) => {
     const isEmail = req.body.email?.includes("@");
 
     const dataObj = isEmail
-      ? { email: req.body.email }
-      : { nickname: req.body.email };
+      ? { "user.email": req.body.email }
+      : { "user.nickname": req.body.email };
 
-    const user = await User.findOne(dataObj);
+    const userData = await User.findOne(dataObj);
 
-    if (!user) {
+    if (!userData) {
       return res.status(404).json({
         message: "Пользователь не найден",
       });
@@ -60,7 +62,7 @@ export const login = async (req, res) => {
 
     const isValidPass = await bcrypt.compare(
       req.body.password,
-      user.passwordHash
+      userData.user.passwordHash
     );
 
     if (!isValidPass) {
@@ -71,7 +73,7 @@ export const login = async (req, res) => {
 
     const token = jwt.sign(
       {
-        _id: user.id,
+        _id: userData.user.id,
       },
       "secret123",
       {
@@ -79,12 +81,10 @@ export const login = async (req, res) => {
       }
     );
 
-    const { passwordHash, ...rest } = user._doc;
+    const { passwordHash, ...rest } = userData._doc;
 
     res.json({ ...rest, token });
   } catch (error) {
-    console.log(error);
-
     res.status(500).json({
       message: "Не удалось авторизоваться",
     });

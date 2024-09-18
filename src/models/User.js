@@ -2,43 +2,45 @@ import mongoose from "mongoose";
 
 const UserSchema = new mongoose.Schema(
   {
-    id: {
-      type: String,
-      unique: true,
-    },
-    email: {
-      type: String,
-      unique: true,
-      required: true,
-    },
-    passwordHash: {
-      type: String,
-      required: true,
-    },
-    nickname: {
-      type: String,
-      unique: true,
-      required: true,
-    },
-    info: {
-      type: String,
-      default: "",
-    },
-    fullname: {
-      type: String,
-      default: "",
-    },
-    job: {
-      type: String,
-      default: "",
-    },
-    city: {
-      type: String,
-      default: "",
-    },
-    avatar: {
-      type: String,
-      default: "",
+    user: {
+      id: {
+        type: String,
+        unique: true,
+      },
+      email: {
+        type: String,
+        unique: true,
+        required: true,
+      },
+      passwordHash: {
+        type: String,
+        required: true,
+      },
+      nickname: {
+        type: String,
+        unique: true,
+        required: true,
+      },
+      info: {
+        type: String,
+        default: "",
+      },
+      fullname: {
+        type: String,
+        default: "",
+      },
+      job: {
+        type: String,
+        default: "",
+      },
+      city: {
+        type: String,
+        default: "",
+      },
+      avatar: {
+        type: String,
+        default: "",
+      },
     },
     posts: {
       type: Array,
