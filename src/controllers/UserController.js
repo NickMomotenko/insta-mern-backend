@@ -111,6 +111,7 @@ export const test = async (req, res) => {
   try {
     res.json({ name: "Nick" });
   } catch (err) {
+    console.log(err);
 
     res.status(404).json({
       message: "Нет доступа",
