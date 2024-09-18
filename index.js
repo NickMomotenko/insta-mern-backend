@@ -2,6 +2,8 @@ import express from "express";
 
 import mongoose from "mongoose";
 
+import cors from 'cors';
+
 import * as UserController from "./src/controllers/UserController.js";
 import checkAuth from "./src/utils/checkAuth.js";
 
@@ -21,6 +23,7 @@ mongoose
 const app = express();
 
 app.use(express.json());
+app.use(cors());
 
 app.get("/auth/me", checkAuth, UserController.getMe);
 app.get("/auth/he", UserController.test);
