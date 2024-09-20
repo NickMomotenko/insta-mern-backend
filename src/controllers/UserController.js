@@ -15,6 +15,7 @@ export const register = async (req, res) => {
 
     if (emailInDB) {
       return res.status(404).json({
+        name: "email",
         message: "Такой email уже используется",
       });
     }
@@ -25,6 +26,7 @@ export const register = async (req, res) => {
 
     if (nicknameInDB) {
       return res.status(404).json({
+        name: "nickname",
         message: "Такой nickname уже используется",
       });
     }
