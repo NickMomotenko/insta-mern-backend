@@ -10,7 +10,7 @@ import { v4 as uuid } from "uuid";
 export const register = async (req, res) => {
   try {
     const emailInDB = await User.findOne({
-      "user.email": req.body.email,
+      email: req.body.email,
     });
 
     if (emailInDB) {
@@ -20,8 +20,14 @@ export const register = async (req, res) => {
       });
     }
 
+    if (!req.body.nickname || req.body.nickname === "") {
+      return res.status(400).json({
+        message: "gaagaggagaga",
+      });
+    }
+
     const nicknameInDB = await User.findOne({
-      "user.nickname": req.body.nickname,
+      nickname: req.body.nickname,
     });
 
     if (nicknameInDB) {
@@ -39,7 +45,7 @@ export const register = async (req, res) => {
       email: req.body.email,
       nickname: req.body.nickname,
       passwordHash: hash,
-      id: uuid(),
+      id: 252225225,
     };
 
     const token = jwt.sign(
@@ -52,12 +58,15 @@ export const register = async (req, res) => {
       }
     );
 
-    userObj = { ...userObj, token };
-
-    await User.create({ user: userObj });
+    await User.create({
+      ...userObj,
+      token,
+    });
 
     res.json({ message: "Вы успешно зарегистрировались" });
   } catch (err) {
+    console.log(err);
+
     res.status(500).json({
       message: "Не удалось выполнить регистрацию",
     });

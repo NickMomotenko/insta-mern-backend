@@ -2,61 +2,68 @@ import mongoose from "mongoose";
 
 const UserSchema = new mongoose.Schema(
   {
-    user: {
-      id: {
-        type: String,
-        unique: true,
-      },
-      email: {
-        type: String,
-        unique: true,
-        required: true,
-      },
-      passwordHash: {
-        type: String,
-        required: true,
-      },
-      nickname: {
-        type: String,
-        unique: true,
-        required: true,
-      },
-      info: {
-        type: String,
-        default: "",
-      },
-      fullname: {
-        type: String,
-        default: "",
-      },
-      job: {
-        type: String,
-        default: "",
-      },
-      city: {
-        type: String,
-        default: "",
-      },
-      avatar: {
-        type: String,
-        default: "",
-      },
+    id: {
+      type: String,
+      default: "",
+      unique: true,
     },
-    posts: {
-      type: Array,
-      default: [],
+    email: {
+      type: String,
+      unique: true,
+      default: "",
+      required: true,
     },
-    stories: {
-      type: Array,
-      default: [],
+    passwordHash: {
+      type: String,
+      default: "",
+      required: true,
     },
-    saved: {
-      type: Array,
-      default: [],
+    nickname: {
+      type: String,
+      unique: true,
+      default: "",
+      required: true,
     },
-    liked: {
-      type: Array,
-      default: [],
+    info: {
+      type: String,
+      default: "",
+    },
+    fullname: {
+      type: String,
+      default: "",
+    },
+    job: {
+      type: String,
+      default: "",
+    },
+    city: {
+      type: String,
+      default: "",
+    },
+    avatar: {
+      type: String,
+      default: "",
+    },
+
+    // posts: {
+    //   type: Array,
+    //   default: [],
+    // },
+    // stories: {
+    //   type: Array,
+    //   default: [],
+    // },
+    // saved: {
+    //   type: Array,
+    //   default: [],
+    // },
+    // liked: {
+    //   type: Array,
+    //   default: [],
+    // },
+    token: {
+      type: String,
+      default: "",
     },
   },
   {
