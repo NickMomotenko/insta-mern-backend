@@ -9,6 +9,26 @@ import { v4 as uuid } from "uuid";
 
 export const register = async (req, res) => {
   try {
+    const emailInDB = await User.findOne({
+      "user.email": req.body.email,
+    });
+
+    if (emailInDB) {
+      return res.status(404).json({
+        message: "Такой email уже используется",
+      });
+    }
+
+    const nicknameInDB = await User.findOne({
+      "user.nickname": req.body.nickname,
+    });
+
+    if (nicknameInDB) {
+      return res.status(404).json({
+        message: "Такой nickname уже используется",
+      });
+    }
+
     const password = req.body.password;
     const salt = await bcrypt.genSalt(10);
     const hash = await bcrypt.hash(password, salt);
@@ -32,12 +52,10 @@ export const register = async (req, res) => {
 
     userObj = { ...userObj, token };
 
-    let doc = await User.create({ user: userObj });
+    await User.create({ user: userObj });
 
     res.json({ message: "Вы успешно зарегистрировались" });
   } catch (err) {
-    console.log(err);
-
     res.status(500).json({
       message: "Не удалось выполнить регистрацию",
     });
