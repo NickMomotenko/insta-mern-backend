@@ -136,6 +136,55 @@ export const getMe = async (req, res) => {
   }
 };
 
+export const uploadAvatar = async (req, res) => {
+  try {
+    res.json(req);
+    // console.log(req.file.originalname);
+  } catch (err) {
+    console.log(err);
+
+    res.status(404).json({
+      message: "Не удалось загрузить аватар",
+    });
+  }
+};
+
+export const checkDataByEmailOrNickname = async (req, res) => {
+  try {
+    const emailInDB = await User.findOne({
+      "user.email": req.body.email,
+    });
+
+    if (emailInDB) {
+      return res.status(404).json({
+        name: "email",
+        message: "Такой email уже используется",
+      });
+    }
+
+    const nicknameInDB = await User.findOne({
+      "user.nickname": req.body.nickname,
+    });
+
+    if (nicknameInDB) {
+      return res.status(404).json({
+        name: "nickname",
+        message: "Такой nickname уже используется",
+      });
+    }
+
+    return res.json({
+      message: "Все ок",
+    });
+  } catch (err) {
+    console.log(err);
+
+    res.status(500).json({
+      message: "Ошибка сервера",
+    });
+  }
+};
+
 export const test = async (req, res) => {
   try {
     res.json({ name: "Nick" });
