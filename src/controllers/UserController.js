@@ -10,7 +10,7 @@ import { v4 as uuid } from "uuid";
 export const register = async (req, res) => {
   try {
     const emailInDB = await User.findOne({
-      email: req.body.email,
+      "user.email": req.body.email,
     });
 
     if (emailInDB) {
@@ -20,14 +20,8 @@ export const register = async (req, res) => {
       });
     }
 
-    if (!req.body.nickname || req.body.nickname === "") {
-      return res.status(400).json({
-        message: "gaagaggagaga",
-      });
-    }
-
     const nicknameInDB = await User.findOne({
-      nickname: req.body.nickname,
+      "user.nickname": req.body.nickname,
     });
 
     if (nicknameInDB) {
@@ -59,7 +53,7 @@ export const register = async (req, res) => {
     );
 
     await User.create({
-      ...userObj,
+      user: { ...userObj },
       token,
     });
 
