@@ -45,7 +45,7 @@ export const register = async (req, res) => {
       email: req.body.email,
       nickname: req.body.nickname,
       passwordHash: hash,
-      id: 252225225,
+      id: uuid(),
     };
 
     const token = jwt.sign(
